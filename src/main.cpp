@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <stddef.h>
+#include <math.h>
+#include <assert.h>
 
 #include "../include/errors.h"
 
@@ -24,7 +25,7 @@ char* my_fgets ( char* str, int numChars, FILE* stream );
 
 char* my_strdup ( const char* src );
 
-ssize_t my_getline( char** lineptr, size_t n, FILE* stream );
+ssize_t my_getline( char** lineptr, size_t* n, FILE* stream );
 
 // TODO assert
 
@@ -91,6 +92,11 @@ int main() {
     size_t size = 10;
 
     my_getline(&str, &size, file);
+
+    printf("%s\n", str);
+    printf("%d\n", str[128]);
+
+    return 0;
 }
 
 int my_puts ( const char * string ) {
@@ -262,17 +268,37 @@ char* my_strdup ( const char* src ) {
 }
 
 ssize_t my_getline( char** lineptr, size_t* size, FILE* stream ) {
-    lineptr = ( char * ) calloc ( *size + 2, sizeof ( char ) );
+    // MyAssert ( lineptr != NULL, ERR_NULLPTR )
+    // MyAssert ( size    != NULL, ERR_NULLPTR )
+    // MyAssert ( stream  != NULL, ERR_NULLPTR )
+    assert ( lineptr != nullptr );
+    assert ( size    != nullptr );
+    assert ( stream  != nullptr );
+
+    printf ( "start my_getline\n" );
+    *lineptr = ( char * ) calloc ( *size + 2, 8 );
+    printf ( "done calloc\n" );
 
     int cnt_ch = 0;
-    char ch = NULL;
-    while ( (ch = fgetc ( stream )) != '\n', EOF ) {
-        **lineptr = ch;
-        **lineptr++;
+    char ch;
+
+    printf ( "start while\n" );
+    while ( (ch = fgetc ( stream )) != '\n' && ch != EOF ) {
+        ( *lineptr ) [ cnt_ch ] = ch;
         cnt_ch++;
-        if ( cnt_ch > *size ) {
-            *size *= 2;
-            lineptr = ( char * ) realloc ( lineptr, *size + 2 );
+        printf ( "%d char - %c\n", cnt_ch, ch );
+
+        printf ( "check for size\n" );
+        if ( cnt_ch + 1 == *size ) {
+            printf ( "criticial size\n" );
+            *size = *size * 2;
+            *lineptr = ( char * ) realloc ( *lineptr, *size + 2 );
         }
     }
+
+    if ( ch == EOF ) {
+        return -1;
+    }
+
+    return cnt_ch + 1;
 }
