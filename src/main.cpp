@@ -100,6 +100,8 @@ int main() {
 }
 
 int my_puts ( const char * string ) {
+    assert ( string != nullptr );
+
     while ( *string != '\0' ) {
         putchar ( *string );
         string++;
@@ -109,6 +111,9 @@ int my_puts ( const char * string ) {
 }
 
 const char* my_strchr ( const char* str, int ch ) {
+    assert ( str != nullptr  );
+    assert ( isfinite ( ch ) );
+
     while ( *str != ch && *str != '\0' ) {
         str++;
     }
@@ -122,6 +127,8 @@ const char* my_strchr ( const char* str, int ch ) {
 }
 
 size_t my_strlen ( const char* str ) {
+    assert ( str != nullptr );
+
     size_t cnt = 0;
 
     while ( *str != '\0' ) {
@@ -133,6 +140,9 @@ size_t my_strlen ( const char* str ) {
 }
 
 char* my_strcpy( char* dest, const char* src ) {
+    assert ( dest != nullptr );
+    assert ( src  != nullptr );
+
     size_t cnt = 0;
 
     while ( *dest != '\0' && *src != '\0' ) {
@@ -147,6 +157,10 @@ char* my_strcpy( char* dest, const char* src ) {
 }
 
 char* my_strncpy ( char* s1, char* s2, size_t n ) {
+    assert ( s1 != nullptr  );
+    assert ( s2 != nullptr  );
+    assert ( isfinite ( n ) );
+
     int cnt = 0;
 
     while ( n != 0 && *s2 != '\0' ) {
@@ -170,6 +184,9 @@ char* my_strncpy ( char* s1, char* s2, size_t n ) {
 }
 
 char* my_strcat ( char* dest, const char* src ) {
+    assert ( dest != nullptr );
+    assert ( src  != nullptr );
+
     size_t cnt = 0;
 
     while ( *dest != '\0' ) {
@@ -189,6 +206,10 @@ char* my_strcat ( char* dest, const char* src ) {
 }
 
 char* my_strncat ( char* dest, const char* src, int n ) {
+    assert ( dest != nullptr );
+    assert ( src  != nullptr );
+    assert ( isfinite ( n )  );
+
     size_t cnt = 0;
 
     while ( *dest != '\0' ) {
@@ -209,6 +230,8 @@ char* my_strncat ( char* dest, const char* src, int n ) {
 }
 
 int my_atoi ( const char* str ) {
+    assert ( str != nullptr );
+
     while ( *str == ' ' ) {
         str++;
     }
@@ -231,6 +254,10 @@ int my_atoi ( const char* str ) {
 }
 
 char* my_fgets ( char* str, int numChars, FILE* stream ) {
+    assert ( str    != nullptr     );
+    assert ( stream != nullptr     );
+    assert ( isfinite ( numChars ) );
+
     int cnt = 0;
     if ( str == nullptr || numChars <= 0 || stream == nullptr ) {
         return NULL;
@@ -253,6 +280,8 @@ char* my_fgets ( char* str, int numChars, FILE* stream ) {
 }
 
 char* my_strdup ( const char* src ) {
+    assert ( src != nullptr );
+
     char* str_for_copy = ( char * ) calloc ( strlen( src ) + 1, sizeof ( char ) );
     int cnt = 0;
 
