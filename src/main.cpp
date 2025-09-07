@@ -1,0 +1,278 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stddef.h>
+
+#include "../include/errors.h"
+
+int my_puts ( const char * string );
+
+const char* my_strchr ( const char* str, int ch );
+
+size_t my_strlen ( const char* str );
+
+char* my_strcpy  ( char* dest, const char* src );
+char* my_strncpy ( char* s1, char* s2, size_t n );
+
+char* my_strcat  ( char* dest, const char* src );
+char* my_strncat (char* dest, const char* src, int n);
+
+int my_atoi ( const char* str );
+
+char* my_fgets ( char* str, int numChars, FILE* stream );
+
+char* my_strdup ( const char* src );
+
+ssize_t my_getline( char** lineptr, size_t n, FILE* stream );
+
+// TODO assert
+
+int main() {
+    // char str[] = "abcdef";
+    // const char * dest = "ABCDEF";
+    // const char ch = 'd';
+
+    // my_puts( str );
+
+    // printf( "%ld\n", my_strchr(str, ch) );
+
+    // printf( "%ld\n", strchr(str, ch) );
+
+    // printf( "%ld\n", my_strlen(str));
+
+    // printf( "%s\n", my_strcpy(str, dest) );
+
+    // char s1[] = "abcd";
+    // char s2[] = "xyz";
+
+    // printf("%s\n", my_strncpy(s1, s2, 4));
+    // printf("%s\n", s1);
+
+    // char s1[10] = "abcd";
+    // char s2[] = "xyz";
+
+    // printf("%s\n", my_strncat(s1, s2, 2));
+    // printf("%s\n", s1);
+
+    // printf("%d\n", atoi("2147483648"));
+    // printf("%d\n", my_atoi(" -123junk"));
+
+    // char str[80];
+    // FILE* ptr;
+
+    // ptr = fopen("txt_for_tests.txt", "r");
+
+    // if(my_fgets(str, 80, ptr) != NULL)
+    // {
+    //     puts(str);
+    // }
+    // fclose(ptr);
+
+    // return 0;
+
+    // const char * str1 = "ABCDEF";
+    // char * str2 = my_strdup(str1);
+    // char * str3 = strdup(str1);
+
+    // printf("%s\n", str2);
+    // printf("%s\n", str3);
+
+    // return 0;
+
+    FILE* file = fopen("txt_for_tests.txt", "r");
+
+    if ( file == nullptr ) {
+        printf("NullPTR\n");
+        return 1;
+    }
+
+    char * str = NULL;
+    size_t size = 10;
+
+    my_getline(&str, &size, file);
+}
+
+int my_puts ( const char * string ) {
+    while ( *string != '\0' ) {
+        putchar ( *string );
+        string++;
+    }
+    printf ( "\n" );
+    return 0;
+}
+
+const char* my_strchr ( const char* str, int ch ) {
+    while ( *str != ch && *str != '\0' ) {
+        str++;
+    }
+
+    if ( *str == ch ) {
+        return str;
+    }
+    else {
+        return NULL;
+    }
+}
+
+size_t my_strlen ( const char* str ) {
+    size_t cnt = 0;
+
+    while ( *str != '\0' ) {
+        cnt++;
+        str++;
+    }
+
+    return cnt;
+}
+
+char* my_strcpy( char* dest, const char* src ) {
+    size_t cnt = 0;
+
+    while ( *dest != '\0' && *src != '\0' ) {
+        *dest = *src;
+
+        dest++;
+        src++;
+        cnt++;
+    }
+
+    return ( char* )( dest-cnt );
+}
+
+char* my_strncpy ( char* s1, char* s2, size_t n ) {
+    int cnt = 0;
+
+    while ( n != 0 && *s2 != '\0' ) {
+        *s1 = *s2;
+
+        n--;
+        s1++;
+        s2++;
+        cnt++;
+    }
+
+    while ( n != 0) {
+        *s1 = '\0';
+
+        s1++;
+        n--;
+        cnt++;
+    }
+
+    return s1 - cnt;
+}
+
+char* my_strcat ( char* dest, const char* src ) {
+    size_t cnt = 0;
+
+    while ( *dest != '\0' ) {
+        dest++;
+        cnt++;
+    }
+
+    while ( *src != '\0' ) {
+        *dest = *src;
+
+        dest++;
+        src++;
+        cnt++;
+    }
+
+    return dest - cnt;
+}
+
+char* my_strncat ( char* dest, const char* src, int n ) {
+    size_t cnt = 0;
+
+    while ( *dest != '\0' ) {
+        dest++;
+        cnt++;
+    }
+
+    while ( *src != '\0' && n != 0 ) {
+        *dest = *src;
+
+        dest++;
+        src++;
+        cnt++;
+        n--;
+    }
+
+    return dest - cnt;
+}
+
+int my_atoi ( const char* str ) {
+    while ( *str == ' ' ) {
+        str++;
+    }
+
+    int sign = 1;
+    if ( *str == '-' ) {
+        sign = -1;
+        str++;
+    }
+
+    int number = 0;
+    while ( isdigit ( *str ) ) {
+        number *= 10;
+        number += *str - 48;
+
+        str++;
+    }
+
+    return (int)(sign * number);
+}
+
+char* my_fgets ( char* str, int numChars, FILE* stream ) {
+    int cnt = 0;
+    if ( str == nullptr || numChars <= 0 || stream == nullptr ) {
+        return NULL;
+    }
+
+    char ch;
+
+    while ( (ch = fgetc( stream )) != '\n', EOF && numChars > 0 ) {
+        *str = ch;
+        str++;
+        cnt++;
+        numChars--;
+    }
+
+    if ( ch == EOF && numChars != 0 ) {
+        return NULL;
+    }
+
+    return str - cnt;
+}
+
+char* my_strdup ( const char* src ) {
+    char* str_for_copy = ( char * ) calloc ( strlen( src ) + 1, sizeof ( char ) );
+    int cnt = 0;
+
+    while ( *src != '\0' ) {
+        *str_for_copy = *src;
+        str_for_copy++;
+        src++;
+        cnt++;
+    }
+    *str_for_copy = '\0';
+
+    return str_for_copy - cnt;
+}
+
+ssize_t my_getline( char** lineptr, size_t* size, FILE* stream ) {
+    lineptr = ( char * ) calloc ( *size + 2, sizeof ( char ) );
+
+    int cnt_ch = 0;
+    char ch = NULL;
+    while ( (ch = fgetc ( stream )) != '\n', EOF ) {
+        **lineptr = ch;
+        **lineptr++;
+        cnt_ch++;
+        if ( cnt_ch > *size ) {
+            *size *= 2;
+            lineptr = ( char * ) realloc ( lineptr, *size + 2 );
+        }
+    }
+}
