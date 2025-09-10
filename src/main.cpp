@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <assert.h>
+#include <errno.h>
 
 #include "../include/errors.h"
 
@@ -280,20 +281,26 @@ char* my_strdup ( const char* src ) {
         return NULL;
     }
     else {
-        // str_for_copy = my_strcpy(str_for_copy, src);
-        // return str_for_copy;
-        return my_strcpy(str_for_copy, src);
+        str_for_copy = my_strcpy(str_for_copy, src);
+        return str_for_copy;
     }
 }
 
 ssize_t my_getline( char** lineptr, size_t* size, FILE* stream ) {
-    assert ( lineptr != nullptr );
-    assert ( size    != nullptr );
-    assert ( stream  != nullptr );
+    if ( lineptr == NULL or size == NULL or stream == NULL ) {
+        return EINVAL;
+    }
 
     printf ( "start my_getline\n" );
-    *lineptr = ( char * ) calloc ( *size + 2, 8 );
-    printf ( "done calloc\n" );
+
+    if ( *lineptr != NULL ) {
+        *lineptr = ( char * ) calloc ( *size + 2, 8 );
+        if ( *lineptr == NULL ) {
+            return ENOMEM;
+        }
+
+        printf ( "done calloc\n" );
+    }
 
     int cnt_ch = 0;
     char ch;
@@ -309,6 +316,10 @@ ssize_t my_getline( char** lineptr, size_t* size, FILE* stream ) {
             printf ( "criticial size\n" );
             *size = *size * 2;
             *lineptr = ( char * ) realloc ( *lineptr, *size + 2 );
+
+            if ( *lineptr == NULL ) {
+                return ENOMEM;
+            }
         }
     }
 
