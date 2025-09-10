@@ -182,11 +182,10 @@ char* my_strcat ( char* dest, const char* src ) {
     assert ( dest != nullptr );
     assert ( src  != nullptr );
 
-    size_t cnt = 0;
+    char * const old_dest = dest;
 
     while ( *dest != '\0' ) {
         dest++;
-        cnt++;
     }
 
     while ( *src != '\0' ) {
@@ -194,10 +193,9 @@ char* my_strcat ( char* dest, const char* src ) {
 
         dest++;
         src++;
-        cnt++;
     }
 
-    return dest - cnt;
+    return old_dest;
 }
 
 char* my_strncat ( char* dest, const char* src, int n ) {
