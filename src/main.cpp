@@ -203,11 +203,10 @@ char* my_strncat ( char* dest, const char* src, int n ) {
     assert ( src  != nullptr );
     assert ( isfinite ( n )  );
 
-    size_t cnt = 0;
+    char * const old_dest = dest;
 
     while ( *dest != '\0' ) {
         dest++;
-        cnt++;
     }
 
     while ( *src != '\0' && n != 0 ) {
@@ -215,11 +214,10 @@ char* my_strncat ( char* dest, const char* src, int n ) {
 
         dest++;
         src++;
-        cnt++;
         n--;
     }
 
-    return dest - cnt;
+    return old_dest;
 }
 
 int my_atoi ( const char* str ) {
