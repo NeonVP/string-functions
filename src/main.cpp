@@ -44,8 +44,8 @@ int main() {
 
     // printf( "%s\n", my_strcpy(str, dest) );
 
-    // char s1[] = "abcd";
-    // char s2[] = "xyz";
+    // char s1[] = "abcdef";
+    // char s2[] = "xyzwf";
 
     // printf("%s\n", my_strncpy(s1, s2, 4));
 
@@ -158,7 +158,7 @@ char* my_strncpy ( char* s1, char* s2, size_t n ) {
     assert ( s2 != nullptr  );
     assert ( isfinite ( n ) );
 
-    int cnt = 0;
+    char * const old_s1 = s1;
 
     while ( n != 0 && *s2 != '\0' ) {
         *s1 = *s2;
@@ -166,7 +166,6 @@ char* my_strncpy ( char* s1, char* s2, size_t n ) {
         n--;
         s1++;
         s2++;
-        cnt++;
     }
 
     while ( n != 0) {
@@ -174,10 +173,9 @@ char* my_strncpy ( char* s1, char* s2, size_t n ) {
 
         s1++;
         n--;
-        cnt++;
     }
 
-    return s1 - cnt;
+    return old_s1;
 }
 
 char* my_strcat ( char* dest, const char* src ) {
