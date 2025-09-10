@@ -255,7 +255,7 @@ char* my_fgets ( char* str, int numChars, FILE* stream ) {
         return NULL;
     }
 
-    char ch;
+    char ch = '\0';
 
     while ( (ch = fgetc( stream )) != '\n', EOF && numChars > 0 ) {
         *str = ch;
@@ -288,9 +288,6 @@ char* my_strdup ( const char* src ) {
 }
 
 ssize_t my_getline( char** lineptr, size_t* size, FILE* stream ) {
-    // MyAssert ( lineptr != NULL, ERR_NULLPTR )
-    // MyAssert ( size    != NULL, ERR_NULLPTR )
-    // MyAssert ( stream  != NULL, ERR_NULLPTR )
     assert ( lineptr != nullptr );
     assert ( size    != nullptr );
     assert ( stream  != nullptr );
