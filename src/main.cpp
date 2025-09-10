@@ -48,7 +48,6 @@ int main() {
     // char s2[] = "xyz";
 
     // printf("%s\n", my_strncpy(s1, s2, 4));
-    // printf("%s\n", s1);
 
     // char s1[10] = "abcd";
     // char s2[] = "xyz";
@@ -81,22 +80,22 @@ int main() {
 
     // return 0;
 
-    FILE* file = fopen("txt_for_tests.txt", "r");
+    // FILE* file = fopen("txt_for_tests.txt", "r");
 
-    if ( file == nullptr ) {
-        printf("NullPTR\n");
-        return 1;
-    }
+    // if ( file == nullptr ) {
+    //     printf("NullPTR\n");
+    //     return 1;
+    // }
 
-    char * str = NULL;
-    size_t size = 10;
+    // char * str = NULL;
+    // size_t size = 10;
 
-    my_getline(&str, &size, file);
+    // my_getline(&str, &size, file);
 
-    printf("%s\n", str);
-    printf("%d\n", str[128]);
+    // printf("%s\n", str);
+    // printf("%d\n", str[128]);
 
-    return 0;
+    // return 0;
 }
 
 int my_puts ( const char * string ) {
@@ -142,17 +141,16 @@ char* my_strcpy( char* dest, const char* src ) {
     assert ( dest != nullptr );
     assert ( src  != nullptr );
 
-    size_t cnt = 0;
+    char * const old_dest = dest;
 
     while ( *dest != '\0' && *src != '\0' ) {
         *dest = *src;
 
         dest++;
         src++;
-        cnt++;
     }
 
-    return ( char* )( dest-cnt );
+    return old_dest;
 }
 
 char* my_strncpy ( char* s1, char* s2, size_t n ) {
