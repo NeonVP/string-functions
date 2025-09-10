@@ -249,7 +249,8 @@ char* my_fgets ( char* str, int numChars, FILE* stream ) {
     assert ( stream != nullptr     );
     assert ( isfinite ( numChars ) );
 
-    int cnt = 0;
+    char * const old_str = str;
+
     if ( str == nullptr || numChars <= 0 || stream == nullptr ) {
         return NULL;
     }
@@ -259,7 +260,6 @@ char* my_fgets ( char* str, int numChars, FILE* stream ) {
     while ( (ch = fgetc( stream )) != '\n', EOF && numChars > 0 ) {
         *str = ch;
         str++;
-        cnt++;
         numChars--;
     }
 
@@ -267,7 +267,7 @@ char* my_fgets ( char* str, int numChars, FILE* stream ) {
         return NULL;
     }
 
-    return str - cnt;
+    return old_str;
 }
 
 char* my_strdup ( const char* src ) {
