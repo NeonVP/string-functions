@@ -71,14 +71,14 @@ int main() {
 
     // return 0;
 
-    // const char * str1 = "ABCDEF";
-    // char * str2 = my_strdup(str1);
-    // char * str3 = strdup(str1);
+    const char * str1 = "ABCDEF";
+    char * str2 = my_strdup(str1);
+    char * str3 = strdup(str1);
 
-    // printf("%s\n", str2);
-    // printf("%s\n", str3);
+    printf("%s\n", str2);
+    printf("%s\n", str3);
 
-    // return 0;
+    return 0;
 
     // FILE* file = fopen("txt_for_tests.txt", "r");
 
@@ -138,17 +138,18 @@ size_t my_strlen ( const char* str ) {
 }
 
 char* my_strcpy( char* dest, const char* src ) {
-    assert ( dest != nullptr );
-    assert ( src  != nullptr );
+    assert ( dest != NULL );
+    assert ( src  != NULL );
+
+    // fprintf(stderr, "%s\n", src);
 
     char * const old_dest = dest;
 
-    while ( *dest != '\0' && *src != '\0' ) {
-        *dest = *src;
-
-        dest++;
-        src++;
+    while ( *src != '\0' ) {
+        *dest++ = *src++;
     }
+
+    *dest = '\0';
 
     return old_dest;
 }
@@ -274,17 +275,15 @@ char* my_strdup ( const char* src ) {
     assert ( src != nullptr );
 
     char* str_for_copy = ( char * ) calloc ( strlen( src ) + 1, sizeof ( char ) );
-    int cnt = 0;
 
-    while ( *src != '\0' ) {
-        *str_for_copy = *src;
-        str_for_copy++;
-        src++;
-        cnt++;
+    if ( str_for_copy == NULL ) {
+        return NULL;
     }
-    *str_for_copy = '\0';
-
-    return str_for_copy - cnt;
+    else {
+        // str_for_copy = my_strcpy(str_for_copy, src);
+        // return str_for_copy;
+        return my_strcpy(str_for_copy, src);
+    }
 }
 
 ssize_t my_getline( char** lineptr, size_t* size, FILE* stream ) {
