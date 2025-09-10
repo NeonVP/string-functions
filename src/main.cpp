@@ -103,8 +103,7 @@ int my_puts ( const char * string ) {
     assert ( string != nullptr );
 
     while ( *string != '\0' ) {
-        putchar ( *string );
-        string++;
+        putchar ( *string++ );
     }
     printf ( "\n" );
     return 0;
